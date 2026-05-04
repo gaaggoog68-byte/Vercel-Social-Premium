@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Vercel Social Premium — Inscription</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F4F7FA;
+      --surface: #FFFFFF;
+      --primary: #0047AB;
+      --primary-light: #E6EFFF;
+      --dark: #0B132B;
+      --text-main: #1C2434;
+      --text-muted: #64748B;
+      --success: #059669;
+      --danger: #DC2626;
+      --border: #E2E8F0;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+      --shadow-md: 0 10px 25px -5px rgba(0,0,0,0.08);
+      --shadow-lg: 0 20px 40px -10px rgba(0,0,0,0.15);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text-main); overflow-x: hidden; }
+
+    /* --- LOADER --- */
+    #loaderOverlay {
+      position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.9);
+      display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;
+    }
+    .spinner { width: 50px; height: 50px; border: 5px solid var(--primary-light); border-top: 5px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* --- ÉCRAN D'INSCRIPTION --- */
+    #registrationPage { min-height: 100vh; display: flex; flex-direction: column; padding: 40px 24px; background: var(--surface); max-width: 500px; margin: 0 auto; box-shadow: var(--shadow-lg); }
+    .reg-header { text-align: center; margin-bottom: 35px; }
+    .logo-icon { font-size: 42px; color: var(--primary); background: var(--primary-light); width: 80px; height: 80px; line-height: 80px; border-radius: 50%; margin: 0 auto 15px; }
+    .reg-header h1 { font-size: 24px; font-weight: 800; color: var(--dark); letter-spacing: -0.5px; }
+    .reg-header p { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
+    
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--dark); margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
+    .input-field { width: 100%; padding: 15px 18px; border-radius: 12px; border: 1px solid var(--border); font-family: inherit; font-size: 15px; transition: 0.3s; background: #F8FAFC; color: var(--text-main); }
+    .input-field:focus { border-color: var(--primary); outline: none; background: white; box-shadow: 0 0 0 4px rgba(0, 71, 171, 0.1); }
+
+    .phone-box { display: flex; gap: 10px; }
+    .country-code { width: 90px; text-align: center; background: #E2E8F0; font-weight: 700; }
+
+    .terms-box { height: 120px; overflow-y: auto; background: #F8FAFC; border-radius: 12px; padding: 16px; font-size: 11px; color: var(--text-muted); border: 1px solid var(--border); margin-bottom: 15px; line-height: 1.6; }
+    .check-group { display: flex; align-items: flex-start; gap: 12px; font-size: 13px; margin-bottom: 30px; line-height: 1.4; }
+    .btn-submit { background: var(--dark); color: white; border: none; padding: 18px; border-radius: 12px; font-weight: 700; width: 100%; cursor: pointer; transition: 0.3s; font-size: 16px; display: flex; justify-content: center; align-items: center; gap: 10px; }
+
+    /* Security Footer Reusable */
+    .security-footer { text-align: center; margin-top: 30px; font-size: 11px; color: var(--text-muted); font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 5px; padding-bottom: 20px; }
+    .security-badges { display: flex; gap: 15px; margin-top: 5px; opacity: 0.7; }
+    .security-badges i { font-size: 16px; }
+
+    /* --- DASHBOARD --- */
+    #dashboardPage { display: none; padding-bottom: 100px; }
+    .app-bar { background: var(--surface); padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
+    .wallet-card { background: linear-gradient(135deg, var(--dark) 0%, #172A45 100%); border-radius: var(--radius); padding: 30px 24px; color: white; margin: 20px; box-shadow: var(--shadow-lg); position: relative; overflow: hidden; }
+    .balance-val { font-size: 36px; font-weight: 800; margin-top: 5px; }
+    
+    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px 30px; }
+    .btn { border: none; border-radius: 14px; padding: 16px; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; }
+    .btn-activate { background: var(--primary); color: white; }
+    .btn-disabled { background: #E2E8F0; color: #94A3B8; }
+
+    .section-title { padding: 0 20px; font-size: 18px; font-weight: 700; color: var(--dark); margin-bottom: 15px; }
+    .tasks-container { padding: 0 20px; }
+    .task-card { background: var(--surface); border-radius: 14px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border); }
+    .task-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .reward { color: var(--success); font-weight: 800; font-size: 14px; }
+    .status-lock { color: var(--text-muted); font-size: 10px; background: #F1F5F9; padding: 3px 7px; border-radius: 10px; margin-top: 4px; display: inline-block; }
+
+    /* --- DEPOSIT MODAL --- */
+    #depositModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 5000; padding: 20px; }
+    .modal-box { background: white; border-radius: 24px; width: 100%; max-width: 400px; padding: 30px; text-align: center; position: relative; }
+    .close-modal { position: absolute; top: 20px; right: 20px; font-size: 20px; color: var(--text-muted); cursor: pointer; }
+    .crypto-option { display: flex; align-items: center; justify-content: space-between; background: #F8FAFC; padding: 15px; border-radius: 12px; margin-top: 15px; border: 1px solid var(--border); cursor: pointer; }
+    .crypto-option:hover { border-color: var(--primary); }
+    .address-display { background: #F1F5F9; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 12px; word-break: break-all; margin: 15px 0; border: 1px dashed var(--primary); }
+
+    /* --- ALERT --- */
+    #customAlert { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 6000; align-items: center; justify-content: center; }
+    .alert-box { background: white; padding: 25px; border-radius: 20px; text-align: center; width: 85%; max-width: 320px; }
+    .alert-btn { background: var(--dark); color: white; border: none; padding: 12px 25px; border-radius: 10px; margin-top: 20px; cursor: pointer; width: 100%; }
+  </style>
+</head>
+<body>
+
+  <!-- Écran de Chargement -->
+  <div id="loaderOverlay">
+    <div class="spinner"></div>
+    <p style="margin-top: 15px; font-weight: 600; color: var(--dark);">Sécurisation de la connexion...</p>
+  </div>
+
+  <!-- PAGE D'INSCRIPTION -->
+  <div id="registrationPage">
+    <div class="reg-header">
+      <div class="logo-icon"><i class="fa-solid fa-share-nodes"></i></div>
+      <h1>Vercel Social Premium</h1>
+      <p>Rejoignez le réseau leader de la rémunération</p>
+    </div>
+
+    <form id="regForm" onsubmit="handleSignUp(event)">
+      <div class="form-group">
+        <label>Nom Complet</label>
+        <input type="text" id="fullName" class="input-field" placeholder="Identité officielle" required>
+      </div>
+
+      <div class="form-group">
+        <label>Pays</label>
+        <select id="countrySelect" class="input-field" onchange="updateCountryCode()" required>
+          <option value="" disabled selected>Choisir un pays</option>
+          <option value="+33">France</option>
+          <option value="+225">Côte d'Ivoire</option>
+          <option value="+221">Sénégal</option>
+          <option value="+237">Cameroun</option>
+          <option value="+243">RDC</option>
+          <option value="+212">Maroc</option>
+          <option value="+261">Madagascar</option>
+          <option value="+1">Canada / USA</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Numéro de Téléphone</label>
+        <div class="phone-box">
+          <input type="text" id="countryCodeDisplay" class="input-field country-code" value="Code" readonly>
+          <input type="tel" class="input-field" placeholder="Numéro" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <input type="password" id="pass1" class="input-field" placeholder="Créer un mot de passe" required>
+      </div>
+
+      <div class="form-group">
+        <label>Confirmer le mot de passe</label>
+        <input type="password" id="pass2" class="input-field" placeholder="Répéter le mot de passe" required>
+      </div>
+
+      <div class="terms-box">
+        <strong>Conditions d'utilisation</strong><br>
+        En créant un compte sur Vercel Social Premium, vous acceptez de participer à nos programmes de boosting social. L'activation du compte via un dépôt de garantie est obligatoire pour prévenir les bots.
+      </div>
+
+      <div class="check-group">
+        <input type="checkbox" required>
+        <label>J'accepte les conditions de sécurité et de confidentialité.</label>
+      </div>
+
+      <button type="submit" class="btn-submit"><i class="fa-solid fa-shield-check"></i> S'INSCRIRE MAINTENANT</button>
+
+      <!-- Security Footer Registration -->
+      <div class="security-footer">
+        <p><i class="fa-solid fa-lock"></i> Plateforme 100% Sécurisée</p>
+        <p style="opacity: 0.7;">Chiffrement SSL 256-bit niveau bancaire</p>
+        <div class="security-badges">
+          <i class="fa-brands fa-cc-visa"></i>
+          <i class="fa-brands fa-cc-mastercard"></i>
+          <i class="fa-brands fa-bitcoin"></i>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- PAGE DASHBOARD -->
+  <div id="dashboardPage" style="max-width: 500px; margin: 0 auto; background: var(--bg); min-height: 100vh;">
+    <div class="app-bar">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 40px; height: 40px; background: var(--primary); color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800;" id="userInit">U</div>
+        <div>
+          <p style="font-size: 10px; color: var(--text-muted); font-weight: 700;">BIENVENUE</p>
+          <p id="userNameDisplay" style="font-size: 14px; font-weight: 800;">Utilisateur</p>
+        </div>
+      </div>
+      <i class="fa-solid fa-circle-user" style="font-size: 24px; color: var(--dark);"></i>
+    </div>
+
+    <div class="wallet-card">
+      <p style="font-size: 12px; opacity: 0.8; font-weight: 600;">SOLDE REVENUS</p>
+      <p class="balance-val">$0.00 <span style="font-size: 16px; opacity: 0.7;">USDT</span></p>
+      <p style="margin-top: 10px; font-size: 11px;"><i class="fa-solid fa-clock"></i> Statut: En attente d'activation</p>
+    </div>
+
+    <div class="action-grid">
+      <button class="btn btn-activate" onclick="toggleDepositModal(true)">
+        <i class="fa-solid fa-bolt-lightning"></i> ACTIVER COMPTE
+      </button>
+      <button class="btn btn-disabled" onclick="openAlert('Accès refusé. Activez votre compte pour retirer.')">
+        <i class="fa-solid fa-wallet"></i> RETRAITS
+      </button>
+    </div>
+
+    <h2 class="section-title">Missions du jour (12)</h2>
+    <div class="tasks-container" id="tasksList">
+      <!-- Les 12 tâches seront générées par JS pour plus de propreté -->
+    </div>
+
+    <!-- Security Footer Dashboard -->
+    <div class="security-footer">
+      <p><i class="fa-solid fa-shield-halved"></i> Protégé par Vercel Social Guard</p>
+      <p style="opacity: 0.7;">Serveurs sécurisés & Transactions chiffrées</p>
+      <div class="security-badges">
+        <i class="fa-brands fa-cc-visa"></i>
+        <i class="fa-brands fa-cc-mastercard"></i>
+        <i class="fa-brands fa-ethereum"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DÉPÔT -->
+  <div id="depositModal">
+    <div class="modal-box">
+      <i class="fa-solid fa-xmark close-modal" onclick="toggleDepositModal(false)"></i>
+      <h3 style="margin-bottom: 10px;">Activer votre compte</h3>
+      <p style="font-size: 13px; color: var(--text-muted);">Choisissez votre mode de dépôt pour l'activation immédiate.</p>
+      
+      <div class="crypto-option" onclick="showAddress('USDT (TRC-20)', 'TXk9m...votre_adresse_usdt...')">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" width="24">
+          <div style="text-align: left;"><p style="font-weight: 700;">USDT</p><p style="font-size: 10px;">Réseau TRC-20</p></div>
+        </div>
+        <i class="fa-solid fa-chevron-right"></i>
+      </div>
+
+      <div class="crypto-option" onclick="showAddress('TRON (TRX)', 'TXk9m...votre_adresse_trx...')">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <img src="https://cryptologos.cc/logos/tron-trx-logo.png" width="24">
+          <div style="text-align: left;"><p style="font-weight: 700;">TRX</p><p style="font-size: 10px;">Réseau TRON</p></div>
+        </div>
+        <i class="fa-solid fa-chevron-right"></i>
+      </div>
+
+      <div id="addressSection" style="display:none; margin-top: 20px;">
+        <p id="selectedNet" style="font-weight: 700; color: var(--primary); font-size: 14px;"></p>
+        <div class="address-display" id="cryptoAddr">ADRESSE_ICI</div>
+        <button class="alert-btn" onclick="openAlert('Adresse copiée ! Effectuez le transfert, puis patientez 5 min.')" style="background: var(--primary);">COPIER L'ADRESSE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALERT MODAL -->
+  <div id="customAlert">
+    <div class="alert-box">
+      <i id="alertIcon" class="fa-solid fa-circle-exclamation" style="font-size: 40px; color: var(--danger); margin-bottom: 15px;"></i>
+      <p id="alertMsg" style="font-weight: 600; color: var(--dark); line-height: 1.5;"></p>
+      <button class="alert-btn" onclick="closeAlert()">COMPRIS</button>
+    </div>
+  </div>
+
+  <script>
+    // Liste des 12 tâches
+    const tasks = [
+      { name: "Facebook Like", icon: "fa-brands fa-facebook", color: "#1877F2", reward: "$1.50" },
+      { name: "TikTok Follow", icon: "fa-brands fa-tiktok", color: "#000000", reward: "$2.00" },
+      { name: "YouTube Sub", icon: "fa-brands fa-youtube", color: "#FF0000", reward: "$3.00" },
+      { name: "Instagram View", icon: "fa-brands fa-instagram", color: "#E1306C", reward: "$1.80" },
+      { name: "Telegram Join", icon: "fa-brands fa-telegram", color: "#0088CC", reward: "$1.20" },
+      { name: "X (Twitter) Retweet", icon: "fa-brands fa-x-twitter", color: "#000000", reward: "$2.10" },
+      { name: "LinkedIn Share", icon: "fa-brands fa-linkedin", color: "#0A66C2", reward: "$2.50" },
+      { name: "Pinterest Save", icon: "fa-brands fa-pinterest", color: "#BD081C", reward: "$1.40" },
+      { name: "Twitch Follow", icon: "fa-brands fa-twitch", color: "#9146FF", reward: "$2.20" },
+      { name: "Discord Join", icon: "fa-brands fa-discord", color: "#5865F2", reward: "$2.00" },
+      { name: "Snapchat Add", icon: "fa-brands fa-snapchat", color: "#FFFC00", reward: "$1.70" },
+      { name: "Threads Post", icon: "fa-solid fa-at", color: "#000000", reward: "$1.90" }
+    ];
+
+    function updateCountryCode() {
+      document.getElementById('countryCodeDisplay').value = document.getElementById('countrySelect').value;
+    }
+
+    function handleSignUp(e) {
+      e.preventDefault();
+      const p1 = document.getElementById('pass1').value;
+      const p2 = document.getElementById('pass2').value;
+      const name = document.getElementById('fullName').value;
+
+      if(p1 !== p2) {
+        openAlert("Attention ! Les mots de passe ne correspondent pas. Veuillez vérifier.", "fa-triangle-exclamation");
+        return;
+      }
+
+      // Afficher le loader
+      document.getElementById('loaderOverlay').style.display = 'flex';
+
+      setTimeout(() => {
+        document.getElementById('loaderOverlay').style.display = 'none';
+        document.getElementById('registrationPage').style.display = 'none';
+        document.getElementById('dashboardPage').style.display = 'block';
+        document.getElementById('userNameDisplay').innerText = name;
+        document.getElementById('userInit').innerText = name.charAt(0).toUpperCase();
+        renderTasks();
+        window.scrollTo(0,0);
+      }, 2000);
+    }
+
+    function renderTasks() {
+      const container = document.getElementById('tasksList');
+      container.innerHTML = tasks.map(t => `
+        <div class="task-card" onclick="openAlert('Votre compte doit être activé pour débloquer cette mission.')">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="task-icon" style="background: ${t.color}15; color: ${t.color};"><i class="${t.icon}"></i></div>
+            <div>
+              <p style="font-weight: 700; font-size: 14px;">${t.name}</p>
+              <p style="font-size: 11px; color: var(--text-muted);">Tâche disponible</p>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <p class="reward">${t.reward}</p>
+            <span class="status-lock"><i class="fa-solid fa-lock"></i> Bloqué</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleDepositModal(show) {
+      document.getElementById('depositModal').style.display = show ? 'flex' : 'none';
+      document.getElementById('addressSection').style.display = 'none';
+    }
+
+    function showAddress(net, addr) {
+      document.getElementById('selectedNet').innerText = "Verser sur " + net;
+      document.getElementById('cryptoAddr').innerText = addr;
+      document.getElementById('addressSection').style.display = 'block';
+    }
+
+    function openAlert(msg, icon = "fa-circle-exclamation") {
+      document.getElementById('alertMsg').innerText = msg;
+      document.getElementById('alertIcon').className = "fa-solid " + icon;
+      document.getElementById('customAlert').style.display = 'flex';
+    }
+
+    function closeAlert() {
+      document.getElementById('customAlert').style.display = 'none';
+    }
+  </script>
+</body>
+  </html>
