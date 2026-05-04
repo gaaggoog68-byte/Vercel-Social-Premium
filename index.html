@@ -242,7 +242,7 @@
       <div id="addressSection" style="display:none; margin-top: 20px;">
         <p id="selectedNet" style="font-weight: 700; color: var(--primary); font-size: 14px;"></p>
         <div class="address-display" id="cryptoAddr">ADRESSE_ICI</div>
-        <button class="alert-btn" onclick="openAlert('Adresse copiée ! Effectuez le transfert, puis patientez 5 min.')" style="background: var(--primary);">COPIER L'ADRESSE</button>
+        <button class="alert-btn" onclick="openAlert('Adresse copiée ! Détection de paiement en cours....')" style="background: var(--primary);">COPIER L'ADRESSE</button>
       </div>
     </div>
   </div>
@@ -259,18 +259,18 @@
   <script>
     // Liste des 12 tâches
     const tasks = [
-      { name: "Facebook Like", icon: "fa-brands fa-facebook", color: "#1877F2", reward: "$1.50" },
-      { name: "TikTok Follow", icon: "fa-brands fa-tiktok", color: "#000000", reward: "$2.00" },
-      { name: "YouTube Sub", icon: "fa-brands fa-youtube", color: "#FF0000", reward: "$3.00" },
-      { name: "Instagram View", icon: "fa-brands fa-instagram", color: "#E1306C", reward: "$1.80" },
-      { name: "Telegram Join", icon: "fa-brands fa-telegram", color: "#0088CC", reward: "$1.20" },
-      { name: "X (Twitter) Retweet", icon: "fa-brands fa-x-twitter", color: "#000000", reward: "$2.10" },
-      { name: "LinkedIn Share", icon: "fa-brands fa-linkedin", color: "#0A66C2", reward: "$2.50" },
-      { name: "Pinterest Save", icon: "fa-brands fa-pinterest", color: "#BD081C", reward: "$1.40" },
-      { name: "Twitch Follow", icon: "fa-brands fa-twitch", color: "#9146FF", reward: "$2.20" },
-      { name: "Discord Join", icon: "fa-brands fa-discord", color: "#5865F2", reward: "$2.00" },
-      { name: "Snapchat Add", icon: "fa-brands fa-snapchat", color: "#FFFC00", reward: "$1.70" },
-      { name: "Threads Post", icon: "fa-solid fa-at", color: "#000000", reward: "$1.90" }
+      { name: "Facebook Like", icon: "fa-brands fa-facebook", color: "#1877F2", reward: "$0.02" },
+      { name: "TikTok Follow", icon: "fa-brands fa-tiktok", color: "#000000", reward: "$0.03" },
+      { name: "YouTube Sub", icon: "fa-brands fa-youtube", color: "#FF0000", reward: "$0.025" },
+      { name: "Instagram View", icon: "fa-brands fa-instagram", color: "#E1306C", reward: "$0.02" },
+      { name: "Telegram Join", icon: "fa-brands fa-telegram", color: "#0088CC", reward: "$0.02" },
+      { name: "X (Twitter) Retweet", icon: "fa-brands fa-x-twitter", color: "#000000", reward: "$0.02" },
+      { name: "LinkedIn Share", icon: "fa-brands fa-linkedin", color: "#0A66C2", reward: "$0.002" },
+      { name: "Pinterest Save", icon: "fa-brands fa-pinterest", color: "#BD081C", reward: "$0.008" },
+      { name: "Twitch Follow", icon: "fa-brands fa-twitch", color: "#9146FF", reward: "$0.002" },
+      { name: "Discord Join", icon: "fa-brands fa-discord", color: "#5865F2", reward: "$0.002" },
+      { name: "Snapchat Add", icon: "fa-brands fa-snapchat", color: "#FFFC00", reward: "$0.002" },
+      { name: "Threads Post", icon: "fa-solid fa-at", color: "#000000", reward: "$0.002" }
     ];
 
     function updateCountryCode() {
