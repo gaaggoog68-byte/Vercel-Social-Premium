@@ -1,360 +1,498 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Vercel Social Premium — Inscription</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #F4F7FA;
-      --surface: #FFFFFF;
-      --primary: #0047AB;
-      --primary-light: #E6EFFF;
-      --dark: #0B132B;
-      --text-main: #1C2434;
-      --text-muted: #64748B;
-      --success: #059669;
-      --danger: #DC2626;
-      --border: #E2E8F0;
-      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-      --shadow-md: 0 10px 25px -5px rgba(0,0,0,0.08);
-      --shadow-lg: 0 20px 40px -10px rgba(0,0,0,0.15);
-      --radius: 16px;
-    }
+<!DOCTYPE html>  <html lang="fr">  
+<head>  
+  <meta charset="utf-8" />  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />  
+  <title>Vercel Social Premium — Inscription</title>  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">  
+  <style>  
+    :root {  
+      --bg: #F4F7FA;  
+      --surface: #FFFFFF;  
+      --primary: #0047AB;  
+      --primary-light: #E6EFFF;  
+      --dark: #0B132B;  
+      --text-main: #1C2434;  
+      --text-muted: #64748B;  
+      --success: #059669;  
+      --danger: #DC2626;  
+      --border: #E2E8F0;  
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);  
+      --shadow-md: 0 10px 25px -5px rgba(0,0,0,0.08);  
+      --shadow-lg: 0 20px 40px -10px rgba(0,0,0,0.15);  
+      --radius: 16px;  
+    }  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }  
+body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text-main); overflow-x: hidden; }  
 
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text-main); overflow-x: hidden; }
+/* --- LOADER --- */  
+#loaderOverlay {  
+  position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.9);  
+  display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;  
+}  
+.spinner { width: 50px; height: 50px; border: 5px solid var(--primary-light); border-top: 5px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }  
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    /* --- LOADER --- */
-    #loaderOverlay {
-      position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.9);
-      display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;
-    }
-    .spinner { width: 50px; height: 50px; border: 5px solid var(--primary-light); border-top: 5px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-@keyframes shimmer { 
-  0% { background-position: -200% center; } 
-  100% { background-position: 200% center; } 
+@keyframes shimmer {
+0% { background-position: -200% center; }
+100% { background-position: 200% center; }
 }
-    /* --- ÉCRAN D'INSCRIPTION --- */
-    #registrationPage { min-height: 100vh; display: flex; flex-direction: column; padding: 40px 24px; background: var(--surface); max-width: 500px; margin: 0 auto; box-shadow: var(--shadow-lg); }
-    .reg-header { text-align: center; margin-bottom: 35px; }
-    .logo-icon { font-size: 42px; color: var(--primary); background: var(--primary-light); width: 80px; height: 80px; line-height: 80px; border-radius: 50%; margin: 0 auto 15px; }
-    ..reg-header h1 { 
-  font-size: 26px; 
-  font-weight: 800; 
-  letter-spacing: -0.8px;
-  margin-bottom: 5px;
-  background: linear-gradient(90deg, #0B132B 0%, #0B132B 40%, #ffffff 50%, #0B132B 60%, #0B132B 100%);
-  background-size: 200% auto;
-  color: #0B132B;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 4s infinite linear;
-    }
-    .reg-header p { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
-    
-    .form-group { margin-bottom: 20px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--dark); margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
-    .input-field { width: 100%; padding: 15px 18px; border-radius: 12px; border: 1px solid var(--border); font-family: inherit; font-size: 15px; transition: 0.3s; background: #F8FAFC; color: var(--text-main); }
-    .input-field:focus { border-color: var(--primary); outline: none; background: white; box-shadow: 0 0 0 4px rgba(0, 71, 171, 0.1); }
+/* --- ÉCRAN D'INSCRIPTION --- */
+#registrationPage { min-height: 100vh; display: flex; flex-direction: column; padding: 40px 24px; background: var(--surface); max-width: 500px; margin: 0 auto; box-shadow: var(--shadow-lg); }
+.reg-header { text-align: center; margin-bottom: 35px; }
+.logo-icon { font-size: 42px; color: var(--primary); background: var(--primary-light); width: 80px; height: 80px; line-height: 80px; border-radius: 50%; margin: 0 auto 15px; }
+.reg-header h1 {
+font-size: 26px;
+font-weight: 800;
+letter-spacing: -0.8px;
+margin-bottom: 5px;
+background: linear-gradient(90deg, #0B132B 0%, #0B132B 40%, #ffffff 50%, #0B132B 60%, #0B132B 100%);
+background-size: 200% auto;
+color: #0B132B;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+animation: shimmer 4s infinite linear;
+}
+.reg-header p { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
 
-    .phone-box { display: flex; gap: 10px; }
-    .country-code { width: 90px; text-align: center; background: #E2E8F0; font-weight: 700; }
+.form-group { margin-bottom: 20px; }  
+.form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--dark); margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; }  
+.input-field { width: 100%; padding: 15px 18px; border-radius: 12px; border: 1px solid var(--border); font-family: inherit; font-size: 15px; transition: 0.3s; background: #F8FAFC; color: var(--text-main); }  
+.input-field:focus { border-color: var(--primary); outline: none; background: white; box-shadow: 0 0 0 4px rgba(0, 71, 171, 0.1); }  
 
-    .terms-box { height: 120px; overflow-y: auto; background: #F8FAFC; border-radius: 12px; padding: 16px; font-size: 11px; color: var(--text-muted); border: 1px solid var(--border); margin-bottom: 15px; line-height: 1.6; }
-    .check-group { display: flex; align-items: flex-start; gap: 12px; font-size: 13px; margin-bottom: 30px; line-height: 1.4; }
-    .btn-submit { background: var(--dark); color: white; border: none; padding: 18px; border-radius: 12px; font-weight: 700; width: 100%; cursor: pointer; transition: 0.3s; font-size: 16px; display: flex; justify-content: center; align-items: center; gap: 10px; }
+.phone-box { display: flex; gap: 10px; }  
+.country-code { width: 90px; text-align: center; background: #E2E8F0; font-weight: 700; }  
 
-    /* Security Footer Reusable */
-    .security-footer { text-align: center; margin-top: 30px; font-size: 11px; color: var(--text-muted); font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 5px; padding-bottom: 20px; }
-    .security-badges { display: flex; gap: 15px; margin-top: 5px; opacity: 0.7; }
-    .security-badges i { font-size: 16px; }
+.terms-box { height: 120px; overflow-y: auto; background: #F8FAFC; border-radius: 12px; padding: 16px; font-size: 11px; color: var(--text-muted); border: 1px solid var(--border); margin-bottom: 15px; line-height: 1.6; }  
+.check-group { display: flex; align-items: flex-start; gap: 12px; font-size: 13px; margin-bottom: 30px; line-height: 1.4; }  
+.btn-submit { background: var(--dark); color: white; border: none; padding: 18px; border-radius: 12px; font-weight: 700; width: 100%; cursor: pointer; transition: 0.3s; font-size: 16px; display: flex; justify-content: center; align-items: center; gap: 10px; }  
 
-    /* --- DASHBOARD --- */
-    #dashboardPage { display: none; padding-bottom: 100px; }
-    .app-bar { background: var(--surface); padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
-    .wallet-card { background: linear-gradient(135deg, var(--dark) 0%, #172A45 100%); border-radius: var(--radius); padding: 30px 24px; color: white; margin: 20px; box-shadow: var(--shadow-lg); position: relative; overflow: hidden; }
-    .balance-val { font-size: 36px; font-weight: 800; margin-top: 5px; }
-    
-    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px 30px; }
-    .btn { border: none; border-radius: 14px; padding: 16px; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; }
-    .btn-activate { background: var(--primary); color: white; }
-    .btn-disabled { background: #E2E8F0; color: #94A3B8; }
+/* Security Footer Reusable */  
+.security-footer { text-align: center; margin-top: 30px; font-size: 11px; color: var(--text-muted); font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 5px; padding-bottom: 20px; }  
+.security-badges { display: flex; gap: 15px; margin-top: 5px; opacity: 0.7; }  
+.security-badges i { font-size: 16px; }  
 
-    .section-title { padding: 0 20px; font-size: 18px; font-weight: 700; color: var(--dark); margin-bottom: 15px; }
-    .tasks-container { padding: 0 20px; }
-    .task-card { background: var(--surface); border-radius: 14px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border); }
-    .task-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-    .reward { color: var(--success); font-weight: 800; font-size: 14px; }
-    .status-lock { color: var(--text-muted); font-size: 10px; background: #F1F5F9; padding: 3px 7px; border-radius: 10px; margin-top: 4px; display: inline-block; }
+/* --- DASHBOARD --- */  
+#dashboardPage { display: none; padding-bottom: 100px; }  
+.app-bar { background: var(--surface); padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }  
+.wallet-card { background: linear-gradient(135deg, var(--dark) 0%, #172A45 100%); border-radius: var(--radius); padding: 30px 24px; color: white; margin: 20px; box-shadow: var(--shadow-lg); position: relative; overflow: hidden; }  
+.balance-val { font-size: 36px; font-weight: 800; margin-top: 5px; }  
+  
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px 30px; }  
+.btn { border: none; border-radius: 14px; padding: 16px; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; }  
+.btn-activate { background: var(--primary); color: white; }  
+.btn-disabled { background: #E2E8F0; color: #94A3B8; }  
 
-    /* --- DEPOSIT MODAL --- */
-    #depositModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 5000; padding: 20px; }
-    .modal-box { background: white; border-radius: 24px; width: 100%; max-width: 400px; padding: 30px; text-align: center; position: relative; }
-    .close-modal { position: absolute; top: 20px; right: 20px; font-size: 20px; color: var(--text-muted); cursor: pointer; }
-    .crypto-option { display: flex; align-items: center; justify-content: space-between; background: #F8FAFC; padding: 15px; border-radius: 12px; margin-top: 15px; border: 1px solid var(--border); cursor: pointer; }
-    .crypto-option:hover { border-color: var(--primary); }
-    .address-display { background: #F1F5F9; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 12px; word-break: break-all; margin: 15px 0; border: 1px dashed var(--primary); }
+.section-title { padding: 0 20px; font-size: 18px; font-weight: 700; color: var(--dark); margin-bottom: 15px; }  
+.tasks-container { padding: 0 20px; }  
+.task-card { background: var(--surface); border-radius: 14px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border); cursor: pointer; transition: 0.2s;}  
+.task-card:active { transform: scale(0.98); }
+.task-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }  
+.reward { color: var(--success); font-weight: 800; font-size: 14px; }  
+.status-lock { color: var(--text-muted); font-size: 10px; background: #F1F5F9; padding: 3px 7px; border-radius: 10px; margin-top: 4px; display: inline-block; }  
 
-    /* --- ALERT --- */
-    #customAlert { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 6000; align-items: center; justify-content: center; }
-    .alert-box { background: white; padding: 25px; border-radius: 20px; text-align: center; width: 85%; max-width: 320px; }
-    .alert-btn { background: var(--dark); color: white; border: none; padding: 12px 25px; border-radius: 10px; margin-top: 20px; cursor: pointer; width: 100%; }
-  </style>
-</head>
-<body>
+/* --- DEPOSIT MODAL --- */  
+#depositModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 5000; padding: 20px; }  
+.modal-box { background: white; border-radius: 24px; width: 100%; max-width: 400px; padding: 30px; text-align: center; position: absolute; }  
+.close-modal { position: absolute; top: 20px; right: 20px; font-size: 20px; color: var(--text-muted); cursor: pointer; }  
+.crypto-option { display: flex; align-items: center; justify-content: space-between; background: #F8FAFC; padding: 15px; border-radius: 12px; margin-top: 15px; border: 1px solid var(--border); cursor: pointer; }  
+.crypto-option:hover { border-color: var(--primary); }  
+.address-display { background: #F1F5F9; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 12px; word-break: break-all; margin: 15px 0; border: 1px dashed var(--primary); }  
 
-  <!-- Écran de Chargement -->
-  <div id="loaderOverlay">
-    <div class="spinner"></div>
-    <p style="margin-top: 15px; font-weight: 600; color: var(--dark);">Sécurisation de la connexion...</p>
-  </div>
+/* --- ALERT --- */  
+#customAlert { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 6000; align-items: center; justify-content: center; }  
+.alert-box { background: white; padding: 25px; border-radius: 20px; text-align: center; width: 85%; max-width: 320px; box-shadow: var(--shadow-lg); }  
+.alert-btn { background: var(--dark); color: white; border: none; padding: 12px 25px; border-radius: 10px; margin-top: 20px; cursor: pointer; width: 100%; font-weight: 600; }
 
-  <!-- PAGE D'INSCRIPTION -->
-  <div id="registrationPage">
-    <div class="reg-header">
-      <div class="logo-icon"><i class="fa-solid fa-share-nodes"></i></div>
-      <h1>Vercel Social Premium</h1>
-      <p>Rejoignez le réseau leader de la rémunération</p>
+/* --- CGU OVERLAY PROFESSIONNEL --- */
+#cguOverlay { 
+  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+  background: var(--dark); z-index: 8000; overflow-y: auto; padding: 20px;
+}
+.cgu-container { 
+  background: white; max-width: 600px; margin: 20px auto; border-radius: 24px; 
+  padding: 40px 25px; box-shadow: var(--shadow-lg); 
+}
+.cgu-header-legal { text-align: center; border-bottom: 2px solid var(--bg); padding-bottom: 20px; margin-bottom: 25px; }
+.cgu-body { color: #475569; font-size: 13px; line-height: 1.8; text-align: justify; }
+.cgu-body h3 { color: var(--dark); margin: 30px 0 12px; font-size: 15px; font-weight: 800; text-transform: uppercase; border-left: 5px solid var(--primary); padding-left: 12px; }
+.legal-tag { background: var(--primary-light); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; display: inline-block; }
+
+/* --- REFERRAL OVERLAY --- */
+#referralOverlay {
+  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+  background: rgba(11, 19, 43, 0.9); z-index: 9000; align-items: center; justify-content: center; padding: 20px;
+}
+  </style>  
+</head>  
+<body>    
+    <div id="loaderOverlay">  
+        <div class="spinner"></div>  
+        <p style="margin-top: 15px; font-weight: 600; color: var(--dark);">Vérification Cloudflare en cours...</p>  
+    </div>    
+
+    <div id="registrationPage">  
+        <div class="reg-header">  
+            <div class="logo-icon"><i class="fa-solid fa-share-nodes"></i></div>  
+            <h1>Vercel Social Premium</h1>  
+            <p>Accès sécurisé à l'écosystème financier</p>  
+        </div>  
+        <form id="regForm" onsubmit="handleSignUp(event)">  
+            <div class="form-group">  
+                <label>Nom Complet (Identité Civile)</label>  
+                <input type="text" id="fullName" class="input-field" placeholder="Prénom et Nom" required>  
+            </div> 
+            <div class="form-group">  
+                <label>Adresse E-mail</label>  
+                <input type="email" id="email" class="input-field" placeholder="votre.email@exemple.com" required>  
+            </div> 
+            <div class="form-group">  
+                <label>Pays de Résidence</label>  
+                <select id="countrySelect" class="input-field" onchange="updateCountryCode()" required>  
+                    <option value="" disabled selected>Veuillez sélectionner</option>  
+                    <option value="+33">France</option>
+                    <option value="+32">Belgique</option>
+                    <option value="+41">Suisse</option>
+                    <option value="+49">Allemagne</option>
+                    <option value="+34">Espagne</option>
+                    <option value="+39">Italie</option>
+                    <option value="+44">Royaume-Uni</option>
+                    <option value="+261">Madagascar</option>  
+                    <option value="+1">Canada / USA</option>  
+                </select>  
+            </div>  
+            <div class="form-group">  
+                <label>Coordonnées Téléphoniques</label>  
+                <div class="phone-box">  
+                    <input type="text" id="countryCodeDisplay" class="input-field country-code" value="ID" readonly>  
+                    <input type="tel" class="input-field" placeholder="00 00 00 00" required>  
+                </div>  
+            </div>  
+            <div class="form-group">  
+                <label>Mot de Passe</label>  
+                <input type="password" id="pass1" class="input-field" placeholder="Saisir votre clé d'accès" required>  
+            </div>  
+            <div class="form-group">  
+                <label>Confirmation</label>  
+                <input type="password" id="pass2" class="input-field" placeholder="Répéter la clé d'accès" required>  
+            </div>  
+            <div class="terms-box">  
+                <strong>Information Légale :</strong> L'accès est strictement réservé aux personnes physiques majeures. Un protocole de sécurité via dépôt unique est nécessaire pour valider l'intégrité de votre compte.  
+            </div>  
+            <div class="check-group">  
+                <input type="checkbox" required>  
+                <label>Je certifie l'exactitude des informations et j'accepte les clauses de sécurité.</label>  
+            </div>  
+            <button type="submit" class="btn-submit"><i class="fa-solid fa-shield-halved"></i> INITIALISER MON ACCÈS</button>  
+            <div class="security-footer">  
+                <p><i class="fa-solid fa-lock"></i> Protocole de sécurité activé</p>  
+                <p style="opacity: 0.7;">Infrastructure Cloudflare Enterprise Protection</p>  
+                <div class="security-badges">  
+                    <i class="fa-brands fa-cc-visa"></i>  
+                    <i class="fa-brands fa-cc-mastercard"></i>  
+                    <i class="fa-brands fa-bitcoin"></i>  
+                </div>  
+            </div>  
+        </form>
     </div>
 
-    <form id="regForm" onsubmit="handleSignUp(event)">
-      <div class="form-group">
-        <label>Nom Complet</label>
-        <input type="text" id="fullName" class="input-field" placeholder="Identité officielle" required>
-      </div>
-
-      <div class="form-group">
-        <label>Pays</label>
-        <select id="countrySelect" class="input-field" onchange="updateCountryCode()" required>
-          <option value="" disabled selected>Choisir un pays</option>
-          <option value="+33">France</option>
-          <option value="+225">Côte d'Ivoire</option>
-          <option value="+221">Sénégal</option>
-          <option value="+237">Cameroun</option>
-          <option value="+243">RDC</option>
-          <option value="+212">Maroc</option>
-          <option value="+261">Madagascar</option>
-          <option value="+1">Canada / USA</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Numéro de Téléphone</label>
-        <div class="phone-box">
-          <input type="text" id="countryCodeDisplay" class="input-field country-code" value="Code" readonly>
-          <input type="tel" class="input-field" placeholder="Numéro" required>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Mot de passe</label>
-        <input type="password" id="pass1" class="input-field" placeholder="Créer un mot de passe" required>
-      </div>
-
-      <div class="form-group">
-        <label>Confirmer le mot de passe</label>
-        <input type="password" id="pass2" class="input-field" placeholder="Répéter le mot de passe" required>
-      </div>
-
-      <div class="terms-box">
-        <strong>Conditions d'utilisation</strong><br>
-        En créant un compte sur Vercel Social Premium, vous acceptez de participer à nos programmes de boosting social. L'activation du compte via un dépôt de garantie est obligatoire pour prévenir les bots.
-      </div>
-
-      <div class="check-group">
-        <input type="checkbox" required>
-        <label>J'accepte les conditions de sécurité et de confidentialité.</label>
-      </div>
-
-      <button type="submit" class="btn-submit"><i class="fa-solid fa-shield-check"></i> S'INSCRIRE MAINTENANT</button>
-
-      <!-- Security Footer Registration -->
-      <div class="security-footer">
-        <p><i class="fa-solid fa-lock"></i> Plateforme 100% Sécurisée</p>
-        <p style="opacity: 0.7;">Chiffrement SSL 256-bit niveau bancaire</p>
-        <div class="security-badges">
-          <i class="fa-brands fa-cc-visa"></i>
-          <i class="fa-brands fa-cc-mastercard"></i>
-          <i class="fa-brands fa-bitcoin"></i>
-        </div>
-      </div>
-    </form>
-  </div>
-
-  <!-- PAGE DASHBOARD -->
-  <div id="dashboardPage" style="max-width: 500px; margin: 0 auto; background: var(--bg); min-height: 100vh;">
-    <div class="app-bar">
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <div style="width: 40px; height: 40px; background: var(--primary); color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800;" id="userInit">U</div>
-        <div>
-          <p style="font-size: 10px; color: var(--text-muted); font-weight: 700;">BIENVENUE</p>
-          <p id="userNameDisplay" style="font-size: 14px; font-weight: 800;">Utilisateur</p>
-        </div>
-      </div>
-      <i class="fa-solid fa-circle-user" style="font-size: 24px; color: var(--dark);"></i>
-    </div>
-
-    <div class="wallet-card">
-      <p style="font-size: 12px; opacity: 0.8; font-weight: 600;">SOLDE REVENUS</p>
-      <p class="balance-val">$0.00 <span style="font-size: 16px; opacity: 0.7;">USDT</span></p>
-      <p style="margin-top: 10px; font-size: 11px;"><i class="fa-solid fa-clock"></i> Statut: En attente d'activation</p>
-    </div>
-
-    <div class="action-grid">
-      <button class="btn btn-activate" onclick="toggleDepositModal(true)">
-        <i class="fa-solid fa-bolt-lightning"></i> ACTIVER COMPTE
-      </button>
-      <button class="btn btn-disabled" onclick="openAlert('Accès refusé. Activez votre compte pour retirer.')">
-        <i class="fa-solid fa-wallet"></i> RETRAITS
-      </button>
-    </div>
-
-    <h2 class="section-title">Missions du jour </h2>
-    <div class="tasks-container" id="tasksList">
-      <!-- Les 12 tâches seront générées par JS pour plus de propreté -->
-    </div>
-
-    <!-- Security Footer Dashboard -->
-    <div class="security-footer">
-      <p><i class="fa-solid fa-shield-halved"></i> Protégé par Vercel Social Guard</p>
-      <p style="opacity: 0.7;">Serveurs sécurisés & Transactions chiffrées</p>
-      <div class="security-badges">
-        <i class="fa-brands fa-cc-visa"></i>
-        <i class="fa-brands fa-cc-mastercard"></i>
-        <i class="fa-brands fa-ethereum"></i>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL DÉPÔT -->
-  <div id="depositModal">
-    <div class="modal-box">
-      <i class="fa-solid fa-xmark close-modal" onclick="toggleDepositModal(false)"></i>
-      <h3 style="margin-bottom: 10px;">Activer votre compte</h3>
-      <p style="font-size: 13px; color: var(--text-muted);">Choisissez votre mode de dépôt pour l'activation immédiate.</p>
-      
-      <div class="crypto-option" onclick="showAddress('USDT (TRC-20)', 'TRde78mPz73RUH8REDgjQkqQcFYtpyquwH')">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" width="24">
-          <div style="text-align: left;"><p style="font-weight: 700;">USDT</p><p style="font-size: 10px;">Réseau TRC-20</p></div>
-        </div>
-        <i class="fa-solid fa-chevron-right"></i>
-      </div>
-
-      <div class="crypto-option" onclick="showAddress('TRON (TRX)', 'TRde78mPz73RUH8REDgjQkqQcFYtpyquwH')">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <img src="https://cryptologos.cc/logos/tron-trx-logo.png" width="24">
-          <div style="text-align: left;"><p style="font-weight: 700;">TRX</p><p style="font-size: 10px;">Réseau TRON</p></div>
-        </div>
-        <i class="fa-solid fa-chevron-right"></i>
-      </div>
-
-      <div id="addressSection" style="display:none; margin-top: 20px;">
-        <p id="selectedNet" style="font-weight: 700; color: var(--primary); font-size: 14px;"></p>
-        <div class="address-display" id="cryptoAddr">ADRESSE_ICI</div>
-        <button class="alert-btn" onclick="openAlert('Adresse copiée ! Détection de paiement en cours....')" style="background: var(--primary);">COPIER L'ADRESSE</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ALERT MODAL -->
-  <div id="customAlert">
-    <div class="alert-box">
-      <i id="alertIcon" class="fa-solid fa-circle-exclamation" style="font-size: 40px; color: var(--danger); margin-bottom: 15px;"></i>
-      <p id="alertMsg" style="font-weight: 600; color: var(--dark); line-height: 1.5;"></p>
-      <button class="alert-btn" onclick="closeAlert()">COMPRIS</button>
-    </div>
-  </div>
-
-  <script>
-    // Liste des 12 tâches
-    const tasks = [
-      { name: "Facebook Like", icon: "fa-brands fa-facebook", color: "#1877F2", reward: "$0.02" },
-      { name: "TikTok Follow", icon: "fa-brands fa-tiktok", color: "#000000", reward: "$0.03" },
-      { name: "YouTube Sub", icon: "fa-brands fa-youtube", color: "#FF0000", reward: "$0.025" },
-      { name: "Instagram View", icon: "fa-brands fa-instagram", color: "#E1306C", reward: "$0.02" },
-      { name: "Telegram Join", icon: "fa-brands fa-telegram", color: "#0088CC", reward: "$0.02" },
-      { name: "X (Twitter) Retweet", icon: "fa-brands fa-x-twitter", color: "#000000", reward: "$0.02" },
-      { name: "LinkedIn Share", icon: "fa-brands fa-linkedin", color: "#0A66C2", reward: "$0.002" },
-      { name: "Pinterest Save", icon: "fa-brands fa-pinterest", color: "#BD081C", reward: "$0.008" },
-      { name: "Twitch Follow", icon: "fa-brands fa-twitch", color: "#9146FF", reward: "$0.002" },
-      { name: "Discord Join", icon: "fa-brands fa-discord", color: "#5865F2", reward: "$0.002" },
-      { name: "Snapchat Add", icon: "fa-brands fa-snapchat", color: "#FFFC00", reward: "$0.002" },
-      { name: "Threads Post", icon: "fa-solid fa-at", color: "#000000", reward: "$0.002" }
-    ];
-
-    function updateCountryCode() {
-      document.getElementById('countryCodeDisplay').value = document.getElementById('countrySelect').value;
-    }
-
-    function handleSignUp(e) {
-      e.preventDefault();
-      const p1 = document.getElementById('pass1').value;
-      const p2 = document.getElementById('pass2').value;
-      const name = document.getElementById('fullName').value;
-
-      if(p1 !== p2) {
-        openAlert("Attention ! Les mots de passe ne correspondent pas. Veuillez vérifier.", "fa-triangle-exclamation");
-        return;
-      }
-
-      // Afficher le loader
-      document.getElementById('loaderOverlay').style.display = 'flex';
-
-      setTimeout(() => {
-        document.getElementById('loaderOverlay').style.display = 'none';
-        document.getElementById('registrationPage').style.display = 'none';
-        document.getElementById('dashboardPage').style.display = 'block';
-        document.getElementById('userNameDisplay').innerText = name;
-        document.getElementById('userInit').innerText = name.charAt(0).toUpperCase();
-        renderTasks();
-        window.scrollTo(0,0);
-      }, 2000);
-    }
-
-    function renderTasks() {
-      const container = document.getElementById('tasksList');
-      container.innerHTML = tasks.map(t => `
-        <div class="task-card" onclick="openAlert('Votre compte doit être activé pour débloquer cette mission.')">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div class="task-icon" style="background: ${t.color}15; color: ${t.color};"><i class="${t.icon}"></i></div>
-            <div>
-              <p style="font-weight: 700; font-size: 14px;">${t.name}</p>
-              <p style="font-size: 11px; color: var(--text-muted);">Tâche disponible</p>
+    <!-- MODAL CGU (AFFICHAGE LÉGAL DÉTAILLÉ) -->
+    <div id="cguOverlay">
+        <div class="cgu-container">
+            <div class="cgu-header-legal">
+                <span class="legal-tag">CONTRAT DE PRESTATIONS NUMÉRIQUES — V1.0.2</span>
+                <h2 style="font-weight: 800; color: var(--dark);">Conditions Générales</h2>
+                <p style="font-size: 11px; color: var(--text-muted);">Lecture obligatoire avant authentification finale</p>
             </div>
-          </div>
-          <div style="text-align: right;">
-            <p class="reward">${t.reward}</p>
-            <span class="status-lock"><i class="fa-solid fa-lock"></i> Bloqué</span>
-          </div>
+            <div class="cgu-body">
+                <p><strong>DÉCLARATION PRÉLIMINAIRE :</strong> L’accès à la plateforme « Vercel Social Premium » constitue une acceptation contractuelle des présentes clauses. L’infrastructure est protégée par <strong>Cloudflare Enterprise</strong>, garantissant un filtrage avancé du trafic et une protection contre les cyber-attaques de type DDoS.</p>
+                
+                <h3>1. OBJET DE L'ACCORD NUMÉRIQUE</h3>
+                <p>Le présent document définit les modalités d'exploitation de l'interface Vercel Social Premium. Il lie l'Utilisateur à la Plateforme dans un cadre de prestations de micro-services digitaux et d'affiliation. Ce contrat prévaut sur toute communication orale ou informelle préalable.</p>
+
+                <h3>2. PROTOCOLE D’ACTIVATION ET SÉCURISATION DU RÉSEAU</h3>
+                <p>Afin de préserver l'écosystème contre les logiciels d'automatisation (bots) et les inscriptions multiples frauduleuses, une procédure d'activation par dépôt de conformité est requise. L’Utilisateur doit s’acquitter d’un versement unique de <strong>vingt euros (20 €/USDT)</strong>, valable pour toute la durée de vie du compte. Ce dépôt certifie l'identité financière du membre et garantit la stabilité des serveurs.</p>
+
+                <h3>3. MÉCANISME D'AFFILIATION ET RÉTRIBUTION</h3>
+                <p>La Plateforme rétribue chaque membre participant à l'expansion du réseau. Pour chaque nouvel utilisateur activé via votre lien unique, une commission de <strong>deux euros (2 €/USDT)</strong> est instantanément créditée sur votre solde, sans aucun plafond de gains cumulables.</p>
+
+                <h3>4. EXÉCUTION DES MISSIONS ET PRIME D'EXCELLENCE</h3>
+                <p>Un catalogue quotidien de 300 missions est mis à disposition. Ces tâches consistent en des interactions sociales ciblées. 
+                <strong>CLAUSE DE PERFORMANCE :</strong> Tout Utilisateur parvenant à traiter l'intégralité des 300 tâches durant les premières 24 heures suivant son inscription se verra octroyer une **Prime d'Excellence Opérationnelle d'un montant de vingt euros (20 €/USDT)**, immédiatement transférable vers le solde retirable.</p>
+
+                <h3>5. GESTION DES FLUX DE RETRAIT</h3>
+                <p>Les retraits de fonds sont éligibles dès que le solde atteint le seuil critique de <strong>trois euros (3 €/USDT)</strong>. Pour garantir une confidentialité absolue et une rapidité de transfert, les paiements sont traités exclusivement via des protocoles blockchain (actifs numériques). L'Utilisateur est seul responsable de la validité de son adresse de réception.</p>
+
+                <h3>6. GARANTIES DE SÉCURITÉ ET CHIFFREMENT</h3>
+                <p>Toutes les transactions et échanges de données sont sécurisés par un chiffrement <strong>SSL/TLS 256-bit</strong> de niveau militaire. Le trafic est monitoré en temps réel par les serveurs de bord de <strong>Cloudflare</strong> pour prévenir toute intrusion ou altération des soldes utilisateurs.</p>
+
+                <h3>7. RESPONSABILITÉ ET FORCE MAJEURE</h3>
+                <p>La Plateforme décline toute responsabilité en cas de perte d'accès due à la négligence de l'Utilisateur ou en cas de fluctuations majeures sur le marché des actifs numériques. En cas de comportement suspect ou de tentative de fraude, le compte pourra être suspendu sans préavis.</p>
+
+                <h3>8. ACCEPTATION IRRÉVOCABLE</h3>
+                <p>En cliquant sur "ACCEPTER ET CONTINUER", l'Utilisateur reconnaît avoir pris connaissance de l'ensemble des clauses techniques et financières et s'engage à les respecter dans leur intégralité.</p>
+            </div>
+            <button class="btn-submit" onclick="closeCGU()" style="margin-top: 30px; background: var(--primary);">
+                <i class="fa-solid fa-check-double"></i> ACCEPTER ET CONTINUER
+            </button>
         </div>
-      `).join('');
-    }
+    </div>
 
-    function toggleDepositModal(show) {
-      document.getElementById('depositModal').style.display = show ? 'flex' : 'none';
-      document.getElementById('addressSection').style.display = 'none';
-    }
+    <!-- MODAL DE CODE DE PARRAINAGE -->
+    <div id="referralOverlay">
+        <div class="modal-box" style="position: relative; max-width: 350px;">
+            <div style="font-size: 30px; color: var(--primary); margin-bottom: 10px;"><i class="fa-solid fa-users"></i></div>
+            <h3 style="margin-bottom: 10px; color: var(--dark);">Code de Parrainage</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Veuillez renseigner l'ID de votre parrain pour valider votre réseau d'affiliation.</p>
+            <form id="referralForm" onsubmit="processReferral(event)">
+                <input type="text" class="input-field" placeholder="Ex: VERCEL-1234" required style="text-align: center; font-weight: bold; letter-spacing: 1px; margin-bottom: 15px;">
+                <button type="submit" class="btn-submit" id="btnReferral">CONFIRMER LE CODE</button>
+            </form>
+            <div id="referralLoader" style="display: none; margin-top: 15px;">
+                <div class="spinner" style="width: 30px; height: 30px; margin: 0 auto; border-width: 3px;"></div>
+                <p style="font-size: 12px; color: var(--dark); font-weight: 600; margin-top: 10px;">Détection et liaison en cours...</p>
+            </div>
+        </div>
+    </div>
 
-    function showAddress(net, addr) {
-      document.getElementById('selectedNet').innerText = "Verser sur " + net;
-      document.getElementById('cryptoAddr').innerText = addr;
-      document.getElementById('addressSection').style.display = 'block';
-    }
+    <!-- PAGE DASHBOARD -->    
+    <div id="dashboardPage" style="max-width: 500px; margin: 0 auto; background: var(--bg); min-height: 100vh;">  
+        <div class="app-bar">  
+            <div style="display: flex; align-items: center; gap: 10px;">  
+                <div style="width: 40px; height: 40px; background: var(--primary); color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800;" id="userInit">U</div>  
+                <div>  
+                    <p style="font-size: 10px; color: var(--text-muted); font-weight: 700;">PROFIL NON VÉRIFIÉ</p>  
+                    <p id="userNameDisplay" style="font-size: 14px; font-weight: 800;">Utilisateur</p>  
+                </div>  
+            </div>  
+            <i class="fa-solid fa-circle-user" style="font-size: 24px; color: var(--dark);"></i>  
+        </div>  
+        <div class="wallet-card">  
+            <p style="font-size: 12px; opacity: 0.8; font-weight: 600;">PORTEFEUILLE ACTIF</p>  
+            <p class="balance-val">$0.00 <span style="font-size: 16px; opacity: 0.7;">USDT</span></p>  
+            <p style="margin-top: 10px; font-size: 11px;"><i class="fa-solid fa-shield-check"></i> État : PROFIL NON VERIFIÉ</p>  
+        </div>  
 
-    function openAlert(msg, icon = "fa-circle-exclamation") {
-      document.getElementById('alertMsg').innerText = msg;
-      document.getElementById('alertIcon').className = "fa-solid " + icon;
-      document.getElementById('customAlert').style.display = 'flex';
-    }
+        <div class="action-grid">  
+            <button class="btn btn-activate" onclick="toggleDepositModal(true)">  
+                <i class="fa-solid fa-bolt-lightning"></i> ACTIVER COMPTE  
+            </button>  
+            <button class="btn btn-disabled" onclick="openAlert('Accès Refusé : Vous devez d\'abord activer votre compte pour débloquer les retraits.', 'Opération Impossible')">  
+                <i class="fa-solid fa-wallet"></i> RETRAITS  
+            </button>  
+        </div>  
 
-    function closeAlert() {
-      document.getElementById('customAlert').style.display = 'none';
-    }
-  </script>
-</body>
-  </html>
+        <h2 class="section-title">Flux d'Opérations de Valorisation Digitale</h2>  
+        <div class="tasks-container" id="tasksList">
+            <!-- Les tâches sont générées via Javascript -->
+        </div>  
+
+        <div class="security-footer">  
+            <p><i class="fa-solid fa-shield-halved"></i> Système protégé par Cloudflare WAF</p>  
+            <p style="opacity: 0.7;">Chiffrement de bout-en-bout activé</p>  
+        </div>
+    </div>    
+
+    <!-- MODAL DÉPÔT -->    
+    <div id="depositModal">  
+        <div class="modal-box">  
+            <i class="fa-solid fa-xmark close-modal" onclick="toggleDepositModal(false)"></i>  
+            <h3 style="margin-bottom: 10px; color: var(--dark);">Validation du Dépôt</h3>  
+            <p style="font-size: 12px; color: var(--text-muted);">Frais de sécurité uniques : 20€</p>  
+            
+            <div class="crypto-option" onclick="showAddress('USDT (TRC-20)', 'TRde78mPz73RUH8REDgjQkqQcFYtpyquwH')">  
+                <div style="display: flex; align-items: center; gap: 10px;">  
+                    <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" width="24" alt="USDT">  
+                    <div style="text-align: left;"><p style="font-weight: 700;">USDT</p><p style="font-size: 10px;">Réseau TRC-20</p></div>  
+                </div>  
+                <i class="fa-solid fa-chevron-right"></i>  
+            </div>  
+            
+            <div class="crypto-option" onclick="showAddress('TRON (TRX)', 'TRde78mPz73RUH8REDgjQkqQcFYtpyquwH')">  
+                <div style="display: flex; align-items: center; gap: 10px;">  
+                    <img src="https://cryptologos.cc/logos/tron-trx-logo.png" width="24" alt="TRX">  
+                    <div style="text-align: left;"><p style="font-weight: 700;">TRX</p><p style="font-size: 10px;">Réseau TRON</p></div>  
+                </div>
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+            
+            <div id="depositAddressArea" style="display: none; margin-top: 20px;">
+                <p style="font-size: 13px; font-weight: 600; color: var(--dark);" id="selectedCryptoName"></p>
+                <div class="address-display" id="cryptoAddressText"></div>
+                <button class="btn-submit" id="btnCopy" onclick="copyDepositAddress()" style="padding: 12px; font-size: 14px; border-radius: 8px;">
+                    <i class="fa-solid fa-copy"></i> COPIER L'ADRESSE
+                </button>
+            </div>
+        </div>  
+    </div>
+
+    <!-- ALERT PERSONNALISÉE -->
+    <div id="customAlert">
+        <div class="alert-box">
+            <div style="font-size: 40px; color: var(--danger); margin-bottom: 10px;"><i class="fa-solid fa-circle-exclamation"></i></div>
+            <h3 id="alertTitle" style="color: var(--dark); font-weight: 800; margin-bottom: 10px; font-size: 18px;">Titre</h3>
+            <p id="alertMsg" style="font-size: 13px; color: #475569; line-height: 1.5;"></p>
+            <button class="alert-btn" onclick="closeAlert()">J'AI COMPRIS</button>
+        </div>
+    </div>
+
+    <!-- SCRIPTS JAVASCRIPT -->
+    <script>
+        // Met à jour l'indicatif selon le pays sélectionné
+        function updateCountryCode() {
+            var select = document.getElementById("countrySelect");
+            document.getElementById("countryCodeDisplay").value = select.value;
+        }
+
+        // CORRECTION 1 : Vérification des mots de passe avant la soumission
+        function handleSignUp(event) {
+            event.preventDefault();
+            
+            var pass1 = document.getElementById("pass1").value;
+            var pass2 = document.getElementById("pass2").value;
+            
+            if(pass1 !== pass2) {
+                openAlert("Les mots de passe saisis ne correspondent pas. Veuillez vérifier votre saisie.", "Erreur de Sécurité");
+                return; // On arrête l'inscription ici
+            }
+
+            document.getElementById("loaderOverlay").style.display = "flex";
+            
+            // Simulation du temps de chargement
+            setTimeout(() => {
+                document.getElementById("loaderOverlay").style.display = "none";
+                document.getElementById("cguOverlay").style.display = "block";
+            }, 1500);
+        }
+
+        function closeCGU() {
+            document.getElementById("cguOverlay").style.display = "none";
+            document.getElementById("referralOverlay").style.display = "flex";
+        }
+
+        function processReferral(event) {
+            event.preventDefault();
+            document.getElementById("btnReferral").style.display = "none";
+            document.getElementById("referralLoader").style.display = "block";
+
+            // Temps de détection du code
+            setTimeout(() => {
+                document.getElementById("referralOverlay").style.display = "none";
+                document.getElementById("registrationPage").style.display = "none";
+                document.getElementById("dashboardPage").style.display = "block";
+                
+                // Mettre à jour le nom dans le dashboard
+                var fullName = document.getElementById("fullName").value || "Utilisateur";
+                document.getElementById("userNameDisplay").innerText = fullName;
+                document.getElementById("userInit").innerText = fullName.charAt(0).toUpperCase();
+                
+                // Charger les tâches
+                generateTasks();
+            }, 2500);
+        }
+
+        function toggleDepositModal(show) {
+            document.getElementById("depositModal").style.display = show ? "flex" : "none";
+            if(!show) {
+                document.getElementById("depositAddressArea").style.display = "none";
+            }
+        }
+
+        let currentAddressToCopy = "";
+        function showAddress(cryptoName, address) {
+            currentAddressToCopy = address;
+            document.getElementById("selectedCryptoName").innerText = "Envoyer sur : " + cryptoName;
+            document.getElementById("cryptoAddressText").innerText = address;
+            document.getElementById("depositAddressArea").style.display = "block";
+            
+            // Réinitialiser le bouton de copie
+            let btnCopy = document.getElementById("btnCopy");
+            btnCopy.innerHTML = '<i class="fa-solid fa-copy"></i> COPIER L\'ADRESSE';
+            btnCopy.style.background = "var(--dark)";
+        }
+
+        // CORRECTION 3 : Fonction de copie robuste (fonctionne partout, même sans HTTPS)
+        function copyDepositAddress() {
+            var fallbackCopy = function() {
+                var textArea = document.createElement("textarea");
+                textArea.value = currentAddressToCopy;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    successCopyUI();
+                } catch (err) {
+                    alert("Votre navigateur empêche la copie automatique. Veuillez copier l'adresse manuellement.");
+                }
+                document.body.removeChild(textArea);
+            };
+
+            var successCopyUI = function() {
+                let btnCopy = document.getElementById("btnCopy");
+                btnCopy.innerHTML = '<i class="fa-solid fa-check"></i> ADRESSE COPIÉE !';
+                btnCopy.style.background = "var(--success)";
+            };
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(currentAddressToCopy).then(successCopyUI).catch(fallbackCopy);
+            } else {
+                fallbackCopy();
+            }
+        }
+
+        function openAlert(message, title) {
+            document.getElementById("alertTitle").innerText = title;
+            document.getElementById("alertMsg").innerText = message;
+            document.getElementById("customAlert").style.display = "flex";
+        }
+
+        function closeAlert() {
+            document.getElementById("customAlert").style.display = "none";
+        }
+
+        // CORRECTION 2 : Les 12 réseaux sociaux ajoutés et clic fonctionnel
+        function generateTasks() {
+            const tasksList = document.getElementById("tasksList");
+            const alertMsg = "Conformément aux normes de sécurité, votre compte nécessite d'une activation. Cela permet de débloquer définitivement vos missions, de vérifier votre identité financière et d'activer les retraits.";
+            const alertTitle = "Activation Requise";
+            
+            const networks = [
+                { name: "Facebook", icon: "fa-facebook", color: "#1877F2" },
+                { name: "Instagram", icon: "fa-instagram", color: "#E4405F" },
+                { name: "TikTok", icon: "fa-tiktok", color: "#000000" },
+                { name: "X (Twitter)", icon: "fa-x-twitter", color: "#000000" },
+                { name: "YouTube", icon: "fa-youtube", color: "#FF0000" },
+                { name: "LinkedIn", icon: "fa-linkedin", color: "#0A66C2" },
+                { name: "Snapchat", icon: "fa-snapchat", color: "#FFFC00" },
+                { name: "Telegram", icon: "fa-telegram", color: "#229ED9" },
+                { name: "Discord", icon: "fa-discord", color: "#5865F2" },
+                { name: "Reddit", icon: "fa-reddit", color: "#FF4500" },
+                { name: "Pinterest", icon: "fa-pinterest", color: "#BD081C" },
+                { name: "Twitch", icon: "fa-twitch", color: "#9146FF" }
+            ];
+            
+            let tasksHTML = "";
+            networks.forEach(network => {
+                tasksHTML += `
+                <div class="task-card" onclick="openAlert('${alertMsg}', '${alertTitle}')">  
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="task-icon" style="background: ${network.color}15; color: ${network.color};">
+                            <i class="fa-brands ${network.icon}"></i>
+                        </div>  
+                        <div>
+                            <p style="font-size: 14px; font-weight: 700;"> (25) Mission ${network.name}</p>
+                            <span class="status-lock"><i class="fa-solid fa-lock"></i> Verrouillé</span>
+                        </div>
+                    </div>
+                    <div class="reward" style="color: var(--text-muted); opacity: 0.5;">+0.05€</div>  
+                </div>
+                `;
+            });
+            tasksList.innerHTML = tasksHTML;
+        }
+    </script>
+</body>  
+</html>
